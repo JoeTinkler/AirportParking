@@ -167,6 +167,16 @@ namespace AirportParking.Tests
             var request = new RecommendRequest { AircraftTypeId = aircraftTypeId, Days = 1, Hours = 1 };
             Assert.Throws<Exception>(() => processor.RecommendSpace(request));
         }
+
+        [Test]
+        public void RecommendSpace_ThrowsErrorWhenNoDuration()
+        {
+            var aircraftTypeId = "A380";
+            var dataHelper = SetupData(DefaultAircraftTypes, DefaultParkingSpaces);
+            var processor = new AppointmentProcessor(dataHelper.Object, MockDateTime());
+            var request = new RecommendRequest { AircraftTypeId = aircraftTypeId, Days = 0, Hours = 0 };
+            Assert.Throws<Exception>(() => processor.RecommendSpace(request));
+        }
         
         [Test]
         [TestCase("A380", 76)]
@@ -213,6 +223,16 @@ namespace AirportParking.Tests
             var dataHelper = SetupData(DefaultAircraftTypes, spaces);
             var processor = new AppointmentProcessor(dataHelper.Object, MockDateTime());
             var request = new BookingRequest { ParkingSpaceId = 1, AircraftTypeId = aircraftTypeId, Days = 1, Hours = 1 };
+            Assert.Throws<Exception>(() => processor.BookAppointment(request));
+        }
+        
+        [Test]
+        public void BookAppointment_ThrowsErrorWhenNoDuration()
+        {
+            var aircraftTypeId = "A380";
+            var dataHelper = SetupData(DefaultAircraftTypes, DefaultParkingSpaces);
+            var processor = new AppointmentProcessor(dataHelper.Object, MockDateTime());
+            var request = new BookingRequest { ParkingSpaceId = 76, AircraftTypeId = aircraftTypeId, Days = 0, Hours = 0 };
             Assert.Throws<Exception>(() => processor.BookAppointment(request));
         }
     }

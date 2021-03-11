@@ -70,6 +70,11 @@ namespace AirportParking
 
         private BookingAppointment CreateAppointment(int days, int hours)
         {
+            if (days == 0 && hours == 0)
+            {
+                throw new Exception("Cannot create appointment with no duration");
+            }
+            
             return new BookingAppointment
             {
                 StartDateTime = _dateTime.UtcNow,
